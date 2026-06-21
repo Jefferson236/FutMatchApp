@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">FutMatchApp</string>
+    <string name="bienvenida">¡Bienvenido a FutMatch!</string>
+    <string name="hint_username">Nombre de usuario</string>
+    <string name="btn_entrar">ENTRAR</string>
+    <string name="btn_registrate">¿No tienes cuenta? Regístrate aquí</string>
+    <string name="desc_logo">Logo de la aplicación</string>
+    <string name="hint_username_nuevo">Nuevo Username</string>
 </resources>

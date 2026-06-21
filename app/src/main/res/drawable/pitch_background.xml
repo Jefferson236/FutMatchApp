@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Grass -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#4CAF50" />
+            <corners android:radius="4dp" />
+        </shape>
+    </item>
+
+    <!-- Border -->
+    <item android:top="8dp" android:bottom="8dp" android:left="8dp" android:right="8dp">
+        <shape android:shape="rectangle">
+            <stroke android:width="2dp" android:color="#FFFFFF" />
+        </shape>
+    </item>
+
+    <!-- Half Line -->
+    <item android:top="249dp" android:bottom="249dp" android:left="8dp" android:right="8dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF" />
+        </shape>
+    </item>
+
+    <!-- Center Circle -->
+    <item android:top="210dp" android:bottom="210dp" android:left="130dp" android:right="130dp">
+        <shape android:shape="oval">
+            <stroke android:width="2dp" android:color="#FFFFFF" />
+        </shape>
+    </item>
+
+    <!-- Penalty Area Top -->
+    <item android:top="8dp" android:left="80dp" android:right="80dp" android:bottom="420dp">
+        <shape android:shape="rectangle">
+            <stroke android:width="2dp" android:color="#FFFFFF" />
+        </shape>
+    </item>
+
+    <!-- Goal Area Top -->
+    <item android:top="8dp" android:left="130dp" android:right="130dp" android:bottom="460dp">
+        <shape android:shape="rectangle">
+            <stroke android:width="2dp" android:color="#FFFFFF" />
+        </shape>
+    </item>
+
+    <!-- Penalty Area Bottom -->
+    <item android:bottom="8dp" android:left="80dp" android:right="80dp" android:top="420dp">
+        <shape android:shape="rectangle">
+            <stroke android:width="2dp" android:color="#FFFFFF" />
+        </shape>
+    </item>
+
+    <!-- Goal Area Bottom -->
+    <item android:bottom="8dp" android:left="130dp" android:right="130dp" android:top="460dp">
+        <shape android:shape="rectangle">
+            <stroke android:width="2dp" android:color="#FFFFFF" />
+        </shape>
+    </item>
+</layer-list>
