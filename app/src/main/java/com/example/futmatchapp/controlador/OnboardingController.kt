@@ -59,4 +59,9 @@ class OnboardingController(private val vista: RegisterDataFragment) {
             }
         }
     }
+
+    fun saltarRegistro() {
+        // Lógica opcional aquí (ej: guardar preferencia de "perfil incompleto")
+        vista.irAConfiguracion()
+    }
 }

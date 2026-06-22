@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.futmatchapp.R
 import com.example.futmatchapp.controlador.OnboardingController
 import com.google.android.material.slider.RangeSlider
@@ -80,6 +81,10 @@ class RegisterDataFragment : Fragment(R.layout.fragment_register_data) {
 
         view.findViewById<Button>(R.id.btnGuardarPerfil).setOnClickListener {
             enviarDatosAlControlador(view)
+        }
+
+        view.findViewById<Button>(R.id.btnSaltarRegistro).setOnClickListener {
+            controlador.saltarRegistro()
         }
     }
 
@@ -268,5 +273,7 @@ class RegisterDataFragment : Fragment(R.layout.fragment_register_data) {
     }
 
     fun mostrarError(mensaje: String) { Toast.makeText(context, mensaje, Toast.LENGTH_LONG).show() }
-    fun irAConfiguracion() { /* Navegar al Home */ }
+    fun irAConfiguracion() {
+        findNavController().navigate(R.id.action_register_to_settings)
+    }
 }
