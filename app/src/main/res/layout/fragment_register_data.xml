@@ -204,7 +204,7 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Saltar por ahora"
+            android:text="@string/btn_saltar_registro"
             android:textColor="#AAAAAA"
             android:layout_marginTop="10dp"
             app:layout_constraintTop_toBottomOf="@id/btnGuardarPerfil"

@@ -35,11 +35,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun ocultarNavegacionSoporte() {
+    fun ocultarBottomNavigation() {
         bottomNavigationView.visibility = View.GONE
     }
 
-    fun mostrarNavegacionSoporte() {
+    fun mostrarBottomNavigation() {
         bottomNavigationView.visibility = View.VISIBLE
     }
 }

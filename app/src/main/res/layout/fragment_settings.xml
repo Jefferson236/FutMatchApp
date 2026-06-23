@@ -7,31 +7,65 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/txtTinderPlaceholder"
+        android:id="@+id/txtFiltros"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Aquí aparecerá el Tinder de FutMatch"
+        android:text="Filtros de Búsqueda"
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
-        android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@id/btnLogOut"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edtEdadMin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Edad Mínima"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#AAAAAA"
+        android:inputType="number"
+        app:layout_constraintEnd_toStartOf="@+id/edtEdadMax"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtFiltros" />
+
+    <EditText
+        android:id="@+id/edtEdadMax"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Edad Máxima"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#AAAAAA"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/edtEdadMin"
+        app:layout_constraintTop_toTopOf="@id/edtEdadMin" />
+
+    <Button
+        android:id="@+id/btnGuardarFiltros"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Guardar Filtros"
+        android:backgroundTint="#00E676"
+        android:textColor="#0A0A0A"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtEdadMin" />
 
     <Button
         android:id="@+id/btnLogOut"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="32dp"
         android:text="Cerrar Sesión"
         android:backgroundTint="#FF5252"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnGuardarFiltros" />
 
     <ProgressBar
         android:id="@+id/progressSettings"

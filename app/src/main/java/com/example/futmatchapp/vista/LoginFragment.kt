@@ -22,7 +22,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as? MainActivity)?.ocultarNavegacionSoporte()
+        (activity as? MainActivity)?.ocultarBottomNavigation()
 
         // Aplicamos un fondo negro base desde código si no está en XML
         view.setBackgroundColor(resources.getColor(R.color.black_pitch, null))

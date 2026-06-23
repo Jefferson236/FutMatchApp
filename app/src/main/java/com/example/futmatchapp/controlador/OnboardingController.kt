@@ -1,5 +1,6 @@
 package com.example.futmatchapp.controlador
 
+import com.example.futmatchapp.R
 import com.example.futmatchapp.modelo.PerfilEntidad
 import com.example.futmatchapp.modelo.ProfileModel
 import com.example.futmatchapp.vista.RegisterDataFragment
@@ -25,12 +26,12 @@ class OnboardingController(private val vista: RegisterDataFragment) {
         val peso = pesoStr.toDoubleOrNull()
 
         if (!username.matches(validadorUsername)) {
-            vista.mostrarError("El username debe ser minúsculas, sin espacios, máx 8 letras.")
+            vista.mostrarError(R.string.error_username_formato)
             return
         }
 
-        if (nombre.isBlank() || apellido.isBlank() || altura == null || peso == null) {
-            vista.mostrarError("Llena tu nombre, apellido y asegúrate de configurar los sliders.")
+        if ((nombre.isBlank() || apellido.isBlank()) || (altura == null || peso == null)) {
+            vista.mostrarError(R.string.error_datos_incompletos)
             return
         }
 
@@ -53,7 +54,7 @@ class OnboardingController(private val vista: RegisterDataFragment) {
 
         modelo.registrarDatosPerfil(nuevoPerfil) { respuesta ->
             if (respuesta != null && respuesta.exito) {
-                vista.irAConfiguracion()
+                vista.irAlExploradorTinder()
             } else {
                 vista.mostrarError(respuesta?.mensaje ?: "Error en el servidor al registrar.")
             }
@@ -62,6 +63,6 @@ class OnboardingController(private val vista: RegisterDataFragment) {
 
     fun saltarRegistro() {
         // Lógica opcional aquí (ej: guardar preferencia de "perfil incompleto")
-        vista.irAConfiguracion()
+        vista.irAlExploradorTinder()
     }
 }

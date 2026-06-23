@@ -1,6 +1,5 @@
 package com.example.futmatchapp.vista
 
-import android.app.Activity
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -14,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.futmatchapp.R
+import com.example.futmatchapp.MainActivity
 import com.example.futmatchapp.controlador.OnboardingController
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.slider.Slider
@@ -84,7 +84,7 @@ class RegisterDataFragment : Fragment(R.layout.fragment_register_data) {
         }
 
         view.findViewById<Button>(R.id.btnSaltarRegistro).setOnClickListener {
-            controlador.saltarRegistro()
+            irAlExploradorTinder()
         }
     }
 
@@ -207,14 +207,14 @@ class RegisterDataFragment : Fragment(R.layout.fragment_register_data) {
             }
             
             setOnClickListener {
-                seleccionarPosicion(this, nombrePos, colorBase)
+                seleccionarPosicion(this, nombrePos)
             }
             tag = colorBase
         }
         canchaContainer.addView(btn)
     }
 
-    private fun seleccionarPosicion(view: TextView, nombrePos: String, colorBase: Int) {
+    private fun seleccionarPosicion(view: TextView, nombrePos: String) {
         for (i in 0 until canchaContainer.childCount) {
             val child = canchaContainer.getChildAt(i) as TextView
             child.isSelected = false
@@ -253,7 +253,7 @@ class RegisterDataFragment : Fragment(R.layout.fragment_register_data) {
         val apellido = view.findViewById<EditText>(R.id.edtApellido).text.toString().trim()
 
         if (posicionSeleccionada.isEmpty()) {
-            mostrarError("¡Toca la cancha para elegir tu posición!")
+            mostrarError(getString(R.string.error_posicion_vacia))
             return
         }
 
@@ -273,7 +273,9 @@ class RegisterDataFragment : Fragment(R.layout.fragment_register_data) {
     }
 
     fun mostrarError(mensaje: String) { Toast.makeText(context, mensaje, Toast.LENGTH_LONG).show() }
-    fun irAConfiguracion() {
-        findNavController().navigate(R.id.action_register_to_settings)
+    fun mostrarError(resId: Int) { Toast.makeText(context, getString(resId), Toast.LENGTH_LONG).show() }
+    fun irAlExploradorTinder() {
+        (activity as? MainActivity)?.mostrarBottomNavigation()
+        findNavController().navigate(R.id.action_register_to_swipeBubbles)
     }
 }
