@@ -144,6 +144,7 @@
             android:layout_marginHorizontal="20dp"
             android:valueFrom="16.0"
             android:valueTo="60.0"
+            app:values="@array/initial_age_range"
             app:thumbColor="#00E676"
             app:trackColorActive="#00E676"
             app:layout_constraintTop_toBottomOf="@id/tvEdadLabel"/>

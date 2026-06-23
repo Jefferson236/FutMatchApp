@@ -1,6 +1,5 @@
 package com.example.futmatchapp.vista
 
-import android.app.Activity
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -104,7 +103,6 @@ class RegisterDataFragment : Fragment(R.layout.fragment_register_data) {
     }
 
     private fun configurarSliders() {
-        sliderEdad.values = listOf(18f, 35f)
         sliderAltura.addOnChangeListener { _, value, _ ->
             tvAlturaLabel.text = "Altura: ${value.toInt()} cm"
         }
@@ -209,14 +207,14 @@ class RegisterDataFragment : Fragment(R.layout.fragment_register_data) {
             }
             
             setOnClickListener {
-                seleccionarPosicion(this, nombrePos, colorBase)
+                seleccionarPosicion(this, nombrePos)
             }
             tag = colorBase
         }
         canchaContainer.addView(btn)
     }
 
-    private fun seleccionarPosicion(view: TextView, nombrePos: String, colorBase: Int) {
+    private fun seleccionarPosicion(view: TextView, nombrePos: String) {
         for (i in 0 until canchaContainer.childCount) {
             val child = canchaContainer.getChildAt(i) as TextView
             child.isSelected = false
@@ -255,7 +253,7 @@ class RegisterDataFragment : Fragment(R.layout.fragment_register_data) {
         val apellido = view.findViewById<EditText>(R.id.edtApellido).text.toString().trim()
 
         if (posicionSeleccionada.isEmpty()) {
-            mostrarError("¡Toca la cancha para elegir tu posición!")
+            mostrarError(getString(R.string.error_posicion_vacia))
             return
         }
 
@@ -276,21 +274,8 @@ class RegisterDataFragment : Fragment(R.layout.fragment_register_data) {
 
     fun mostrarError(mensaje: String) { Toast.makeText(context, mensaje, Toast.LENGTH_LONG).show() }
     fun mostrarError(resId: Int) { Toast.makeText(context, getString(resId), Toast.LENGTH_LONG).show() }
-
     fun irAlExploradorTinder() {
         (activity as? MainActivity)?.mostrarBottomNavigation()
         findNavController().navigate(R.id.action_register_to_swipeBubbles)
-    }
-
-    fun irAInicio(userId: Int) {
-        val sessionManager = com.example.futmatchapp.SessionManager(requireContext())
-        sessionManager.saveUserId(userId)
-
-        val bundle = Bundle().apply { 
-            putInt("USUARIO_ID", userId)
-            putInt("PERFIL_ID", userId)
-        }
-        (activity as? MainActivity)?.mostrarBottomNavigation()
-        findNavController().navigate(R.id.action_register_to_swipeBubbles, bundle)
     }
 }

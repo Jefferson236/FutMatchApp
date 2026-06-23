@@ -23,11 +23,28 @@
         android:label="Registro de Perfil"
         tools:layout="@layout/fragment_register_data">
         <action
+            android:id="@+id/action_register_to_swipeBubbles"
+            app:destination="@id/swipeBubblesFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="false"/>
+        <action
             android:id="@+id/action_register_to_settings"
             app:destination="@id/settingsFragment"
             app:popUpTo="@id/registerDataFragment"
             app:popUpToInclusive="true"/>
     </fragment>
+
+    <fragment
+        android:id="@+id/swipeBubblesFragment"
+        android:name="com.example.futmatchapp.vista.SwipeBubblesFragment"
+        android:label="Explorar Partidos"
+        tools:layout="@layout/fragment_swipe_bubbles" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.futmatchapp.vista.ProfileFragment"
+        android:label="Mi Perfil"
+        tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/settingsFragment"

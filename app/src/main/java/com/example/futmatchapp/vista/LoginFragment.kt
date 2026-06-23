@@ -53,8 +53,15 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     fun irAInicio(usuarioId: Int) {
-        val bundle = Bundle().apply { putInt("USUARIO_ID", usuarioId) }
-        findNavController().navigate(R.id.settingsFragment, bundle)
+        val sessionManager = com.example.futmatchapp.SessionManager(requireContext())
+        sessionManager.saveUserId(usuarioId)
+        
+        val bundle = Bundle().apply { 
+            putInt("USUARIO_ID", usuarioId) 
+            putInt("PERFIL_ID", usuarioId)
+        }
+        (activity as? MainActivity)?.mostrarBottomNavigation()
+        findNavController().navigate(R.id.swipeBubblesFragment, bundle)
     }
 
     private fun irAlRegistro() {

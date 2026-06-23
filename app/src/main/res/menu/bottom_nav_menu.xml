@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/nav_explore"
+        android:id="@+id/swipeBubblesFragment"
         android:icon="@android:drawable/ic_menu_search"
         android:title="Explorar" />
     <item
-        android:id="@+id/nav_profile"
+        android:id="@+id/profileFragment"
         android:icon="@android:drawable/ic_menu_manage"
         android:title="Perfil" />
 </menu>

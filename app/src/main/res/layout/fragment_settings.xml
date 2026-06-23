@@ -57,6 +57,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnGuardarFiltros" />
 
+    <Button
+        android:id="@+id/btnDeleteAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="ELIMINAR MI CUENTA"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:textColor="#FF0000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnLogOut" />
+
     <ProgressBar
         android:id="@+id/progressSettings"
         android:layout_width="wrap_content"

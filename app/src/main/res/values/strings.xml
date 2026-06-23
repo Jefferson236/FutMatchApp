@@ -6,4 +6,6 @@
     <string name="btn_registrate">¿No tienes cuenta? Regístrate aquí</string>
     <string name="desc_logo">Logo de la aplicación</string>
     <string name="hint_username_nuevo">Nuevo Username</string>
+    <string name="btn_saltar_registro">Saltar registro por ahora</string>
+    <string name="error_posicion_vacia">¡Toca la cancha para elegir tu posición!</string>
 </resources>
