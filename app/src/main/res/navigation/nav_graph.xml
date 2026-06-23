@@ -40,4 +40,10 @@
         android:name="com.example.futmatchapp.vista.SettingsFragment"
         android:label="Configuración"
         tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.futmatchapp.vista.ProfileFragment"
+        android:label="Perfil"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

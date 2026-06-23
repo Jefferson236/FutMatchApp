@@ -6,12 +6,8 @@
     <string name="btn_registrate">¿No tienes cuenta? Regístrate aquí</string>
     <string name="desc_logo">Logo de la aplicación</string>
     <string name="hint_username_nuevo">Nuevo Username</string>
-    <string name="btn_saltar_registro">Saltar por ahora</string>
-    <string name="tinder_placeholder">Aquí aparecerá el Tinder de FutMatch</string>
-    <string name="error_posicion_vacia">¡Toca la cancha para elegir tu posición!</string>
-    <string name="error_username_formato">El username debe ser minúsculas, sin espacios, máx 8 letras.</string>
-    <string name="error_datos_incompletos">Llena tu nombre, apellido y asegúrate de configurar los sliders.</string>
-    <string name="bubble_card_name_default">Nombre del Partido</string>
-    <string name="bubble_card_date_default">Hoy, 20:00</string>
-    <string name="bubble_card_location_default">Polideportivo Municipal</string>
+    <string name="error_username_formato">El username debe tener entre 1 y 8 letras minúsculas.</string>
+    <string name="error_datos_incompletos">Por favor, completa todos los campos obligatorios.</string>
+    <string name="error_posicion_vacia">Debes seleccionar una posición en el campo.</string>
+    <string name="btn_saltar_registro">SALTAR POR AHORA</string>
 </resources>

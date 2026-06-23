@@ -3,7 +3,8 @@ package com.example.futmatchapp
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.example.futmatchapp.vista.SettingsFragment
+import androidx.fragment.app.Fragment
+import com.example.futmatchapp.vista.ProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -24,9 +25,9 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_profile -> {
-                    // Navegar al Fragment de Ajustes/Perfil de la Fase 1
+                    // Navegar al Fragment de Perfil
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.nav_host_fragment, SettingsFragment())
+                        .replace(R.id.nav_host_fragment, ProfileFragment())
                         .commit()
                     true
                 }
@@ -41,5 +42,12 @@ class MainActivity : AppCompatActivity() {
 
     fun mostrarBottomNavigation() {
         bottomNavigationView.visibility = View.VISIBLE
+    }
+
+    fun cambiarFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.nav_host_fragment, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }
