@@ -40,26 +40,26 @@ class OnboardingController(private val vista: RegisterDataFragment) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 // 1. Subir imágenes
-                var avatarUrlFinal = ""
-                var bannerUrlFinal = ""
+                var avatarUrlFinal: String? = null
+                var bannerUrlFinal: String? = null
                 val galleryUrlsFinal = mutableListOf<String>()
 
                 val latch = CountDownLatch( (if (avatarUri != null) 1 else 0) + (if (bannerUri != null) 1 else 0) + galleryUris.size )
 
                 avatarUri?.let { uri ->
-                    ImageUploader.uploadImage(context, uri) { url ->
+                    ImageUploader.uploadImage(context, uri) { url: String? ->
                         if (url != null) avatarUrlFinal = url
                         latch.countDown()
                     }
                 }
                 bannerUri?.let { uri ->
-                    ImageUploader.uploadImage(context, uri) { url ->
+                    ImageUploader.uploadImage(context, uri) { url: String? ->
                         if (url != null) bannerUrlFinal = url
                         latch.countDown()
                     }
                 }
                 galleryUris.forEach { uri ->
-                    ImageUploader.uploadImage(context, uri) { url ->
+                    ImageUploader.uploadImage(context, uri) { url: String? ->
                         if (url != null) galleryUrlsFinal.add(url)
                         latch.countDown()
                     }

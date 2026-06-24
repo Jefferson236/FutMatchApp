@@ -211,8 +211,8 @@ class ProfileFragment : Fragment() {
             mostrarCargando(true)
             
             // 1. Subir imágenes si han cambiado
-            var avatarUrlFinal = avatarUrlActual ?: ""
-            var bannerUrlFinal = bannerUrlActual ?: ""
+            var avatarUrlFinal: String? = avatarUrlActual
+            var bannerUrlFinal: String? = bannerUrlActual
             
             val totalUploads = (if (newAvatarUri != null) 1 else 0) + (if (newBannerUri != null) 1 else 0)
             if (totalUploads == 0) {
@@ -222,14 +222,14 @@ class ProfileFragment : Fragment() {
 
             var uploadsDone = 0
             newAvatarUri?.let { uri ->
-                ImageUploader.uploadImage(requireContext(), uri) { url ->
+                ImageUploader.uploadImage(requireContext(), uri) { url: String? ->
                     if (url != null) avatarUrlFinal = url
                     uploadsDone++
                     if (uploadsDone == totalUploads) enviarActualizacion(avatarUrlFinal, bannerUrlFinal)
                 }
             }
             newBannerUri?.let { uri ->
-                ImageUploader.uploadImage(requireContext(), uri) { url ->
+                ImageUploader.uploadImage(requireContext(), uri) { url: String? ->
                     if (url != null) bannerUrlFinal = url
                     uploadsDone++
                     if (uploadsDone == totalUploads) enviarActualizacion(avatarUrlFinal, bannerUrlFinal)
@@ -243,8 +243,11 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun enviarActualizacion(avatarUrl: String, bannerUrl: String) {
-        val p = Perfil(
+    private fun enviarActualizacion(avatarUrl: String?, bannerUrl: String?) {
+        Log.d("FutMatch", "ProfileFragment - Enviando actualización: Avatar=$avatarUrl, Banner=$bannerUrl")
+        // Usamos Perfil de Models.kt que es el que espera profileController.actualizarTodo
+        val perfilModels = com.example.futmatchapp.modelo.Perfil(
+            id = dbPerfilId,
             usuario_id = usuarioLogueadoId,
             nombre = edtNombre.text.toString().trim(),
             apellido = edtApellido.text.toString().trim(),
@@ -255,7 +258,8 @@ class ProfileFragment : Fragment() {
             avatar_url = avatarUrl,
             banner_url = bannerUrl
         )
-        profileController.actualizarTodo(dbPerfilId, p, usuarioLogueadoId)
+        
+        profileController.actualizarTodo(dbPerfilId, perfilModels, usuarioLogueadoId)
     }
 
     private fun subirImagenAGaleria(uri: Uri) {
@@ -298,6 +302,10 @@ class ProfileFragment : Fragment() {
         btnEliminarPerfil.visibility = visibility
         btnAddPhoto.visibility = visibility
         
+        // El botón de editar foto (en la tarjeta) y el banner ahora responden al click
+        btnEditPhoto.isClickable = true 
+        imgBannerProfile.isClickable = true
+
         fabEditToggle.setImageResource(
             if (modoEdicion) android.R.drawable.ic_menu_close_clear_cancel 
             else android.R.drawable.ic_menu_edit

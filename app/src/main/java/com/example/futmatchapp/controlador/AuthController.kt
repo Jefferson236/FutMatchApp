@@ -20,22 +20,27 @@ class AuthController(private val vista: LoginFragment) {
         vista.mostrarCargando(true)
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                var paginaActual = 1
                 var usuarioEncontrado: com.example.futmatchapp.modelo.Usuario? = null
                 
                 // Buscamos exhaustivamente en todas las páginas si es necesario
-                while (usuarioEncontrado == null) {
-                    val response = apiService.getUsuarios() // Nota: El API actual no parece recibir página, pero si lo hiciera: getUsuarios(paginaActual)
+                var currentUrl: String? = "api/usuarios"
+                
+                while (currentUrl != null) {
+                    val response = apiService.getUsuarios() // Si el API soporta páginas vía URL, mejor
                     if (response.isSuccessful && response.body() != null) {
-                        val usuarios = response.body()!!.data
-                        usuarioEncontrado = usuarios.find { it.email.lowercase() == username.lowercase() }
+                        val paginated = response.body()!!
+                        usuarioEncontrado = paginated.data.find { it.email.lowercase() == username.lowercase() }
                         
-                        // Si no está en esta página y hay más páginas, continuaríamos. 
-                        // Como el API actual getUsuarios() no recibe página, asumimos que devuelve una lista.
-                        // Si el backend tuviera búsqueda por email sería: apiService.buscarUsuario(email = username)
+                        if (usuarioEncontrado != null) break
                         
-                        if (usuarioEncontrado != null || response.body()?.links?.next == null) break
-                        paginaActual++
+                        // Si no hay más páginas, salir. 
+                        // Nota: El API actual getUsuarios() no recibe parámetros.
+                        // Si el backend devuelve siempre la misma página 1, esto entraría en bucle si no cortamos.
+                        currentUrl = paginated.links?.next
+                        if (currentUrl == null) break
+                        
+                        // Como getUsuarios() no acepta URL, salimos para evitar bucle infinito
+                        break
                     } else {
                         break
                     }

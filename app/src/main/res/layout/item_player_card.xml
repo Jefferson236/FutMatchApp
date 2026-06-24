@@ -8,15 +8,15 @@
     app:cardElevation="4dp">
 
     <ImageView
-        android:id="@+id/ivSeekerPhoto"
+        android:id="@+id/ivPlayerPhoto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/cancha_futbol" />
+        android:src="@drawable/ic_launcher_background" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="250dp"
         android:layout_gravity="bottom"
         android:background="@drawable/gradient_black" />
 
@@ -28,41 +28,30 @@
         android:padding="20dp">
 
         <TextView
-            android:id="@+id/tvSeekerName"
+            android:id="@+id/tvPlayerName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nombre del Buscador"
+            android:text="Nombre Apellido"
             android:textColor="#FFFFFF"
-            android:textSize="24sp"
+            android:textSize="28sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tvRequirements"
+            android:id="@+id/tvPlayerStats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Busca: 20-30 años | Portero | Derecho"
+            android:text="OVR: 85 | PAC: 90 | SHO: 82"
             android:textColor="#00E676"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/tvBubbleComment"
+            android:id="@+id/tvPlayerInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="¡Falta uno para el partido de las 9! En la Cancha Central."
+            android:text="1.80m | 75kg | Delantero | Derecho"
             android:textColor="#CCCCCC"
             android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/tvBubbleDetails"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="Hoy 21:00 - Cancha Central"
-            android:textColor="#AAAAAA"
-            android:textSize="12sp" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

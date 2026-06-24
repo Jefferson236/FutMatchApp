@@ -95,16 +95,16 @@ class ProfileController(private val vista: ProfileFragment) {
     fun actualizarTodo(dbId: Int, perfil: Perfil, usuarioId: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                Log.d("FutMatch", "ProfileController - Actualizando perfil ID: $dbId")
+                Log.d("FutMatch", "ProfileController - Actualizando perfil ID: $dbId con datos: $perfil")
                 val response = apiService.actualizarPerfil(dbId, perfil)
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-                        Log.d("FutMatch", "ProfileController - Actualización exitosa")
+                        Log.d("FutMatch", "ProfileController - Actualización exitosa: ${response.body()}")
                         vista.mostrarMensajeExito("Perfil actualizado correctamente.")
                         cargarPerfil(usuarioId)
                     } else {
                         val errorMsg = response.errorBody()?.string() ?: "Desconocido"
-                        Log.e("FutMatch", "ProfileController - Error al actualizar: $errorMsg")
+                        Log.e("FutMatch", "ProfileController - Error al actualizar: $errorMsg (Código: ${response.code()})")
                         vista.mostrarError("Error al actualizar: ${response.code()}")
                     }
                 }

@@ -96,12 +96,16 @@
 
                             <ImageView
                                 android:id="@+id/btnEditPhoto"
-                                android:layout_width="26dp"
-                                android:layout_height="26dp"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
                                 android:layout_gravity="bottom|end"
-                                android:background="#99000000"
-                                android:padding="4dp"
-                                android:src="@android:drawable/ic_menu_edit" />
+                                android:background="@drawable/circle_background"
+                                android:backgroundTint="#99000000"
+                                android:elevation="4dp"
+                                android:padding="6dp"
+                                android:src="@android:drawable/ic_menu_edit"
+                                android:clickable="true"
+                                android:focusable="true"/>
                         </FrameLayout>
                     </LinearLayout>
 
