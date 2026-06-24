@@ -50,6 +50,9 @@ interface ApiService {
     @GET("api/estadisticas")
     suspend fun getEstadisticas(): Response<PaginatedResponse<Estadistica>>
 
+    @GET("api/estadisticas/perfil/{perfil_id}")
+    suspend fun getEstadisticasPorPerfil(@Path("perfil_id") perfilId: Int): Response<ApiResponse<Estadistica>>
+
     @POST("api/estadisticas")
     suspend fun crearEstadistica(@Body estadistica: Estadistica): Response<ApiResponse<Estadistica>>
 }
@@ -58,9 +61,9 @@ object RetrofitClient {
     private const val BASE_URL = "http://10.0.2.2/lask2/public/"
 
     private val okHttpClient = OkHttpClient.Builder()
-        .connectTimeout(30, TimeUnit.SECONDS)
-        .readTimeout(30, TimeUnit.SECONDS)
-        .writeTimeout(30, TimeUnit.SECONDS)
+        .connectTimeout(60, TimeUnit.SECONDS)
+        .readTimeout(60, TimeUnit.SECONDS)
+        .writeTimeout(60, TimeUnit.SECONDS)
         .build()
 
     fun create(): ApiService {

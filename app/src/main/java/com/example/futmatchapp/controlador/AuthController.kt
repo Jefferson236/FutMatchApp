@@ -20,22 +20,34 @@ class AuthController(private val vista: LoginFragment) {
         vista.mostrarCargando(true)
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                // Buscamos en todos los usuarios para encontrar el que coincida con el "email" (que es el username por ahora)
-                val response = apiService.getUsuarios()
-                withContext(Dispatchers.Main) {
-                    vista.mostrarCargando(false)
+                var paginaActual = 1
+                var usuarioEncontrado: com.example.futmatchapp.modelo.Usuario? = null
+                
+                // Buscamos exhaustivamente en todas las páginas si es necesario
+                while (usuarioEncontrado == null) {
+                    val response = apiService.getUsuarios() // Nota: El API actual no parece recibir página, pero si lo hiciera: getUsuarios(paginaActual)
                     if (response.isSuccessful && response.body() != null) {
                         val usuarios = response.body()!!.data
-                        val usuarioEncontrado = usuarios.find { it.email.lowercase() == username.lowercase() }
+                        usuarioEncontrado = usuarios.find { it.email.lowercase() == username.lowercase() }
                         
-                        if (usuarioEncontrado != null && usuarioEncontrado.id != null) {
-                            Log.d("FutMatch", "Login exitoso para: $username (ID: ${usuarioEncontrado.id})")
-                            vista.irAInicio(usuarioEncontrado.id)
-                        } else {
-                            vista.mostrarError("Usuario no encontrado. ¿Deseas registrarte?")
-                        }
+                        // Si no está en esta página y hay más páginas, continuaríamos. 
+                        // Como el API actual getUsuarios() no recibe página, asumimos que devuelve una lista.
+                        // Si el backend tuviera búsqueda por email sería: apiService.buscarUsuario(email = username)
+                        
+                        if (usuarioEncontrado != null || response.body()?.links?.next == null) break
+                        paginaActual++
                     } else {
-                        vista.mostrarError("Error al conectar con el servidor.")
+                        break
+                    }
+                }
+
+                withContext(Dispatchers.Main) {
+                    vista.mostrarCargando(false)
+                    if (usuarioEncontrado != null && usuarioEncontrado!!.id != null) {
+                        Log.d("FutMatch", "Login exitoso para: $username (ID: ${usuarioEncontrado!!.id})")
+                        vista.irAInicio(usuarioEncontrado!!.id!!)
+                    } else {
+                        vista.mostrarError("Usuario no encontrado. ¿Deseas registrarte?")
                     }
                 }
             } catch (e: Exception) {

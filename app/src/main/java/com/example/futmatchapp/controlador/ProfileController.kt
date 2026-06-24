@@ -59,6 +59,39 @@ class ProfileController(private val vista: ProfileFragment) {
         }
     }
 
+    fun cargarEstadisticas(perfilId: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                Log.d("FutMatch", "ProfileController - Cargando estadísticas para perfil: $perfilId")
+                val response = apiService.getEstadisticasPorPerfil(perfilId)
+                
+                var stats: com.example.futmatchapp.modelo.Estadistica? = null
+                
+                if (response.isSuccessful && response.body()?.data != null) {
+                    stats = response.body()!!.data
+                    Log.d("FutMatch", "ProfileController - Estadísticas obtenidas por perfil_id")
+                } else {
+                    Log.w("FutMatch", "ProfileController - Falló getEstadisticasPorPerfil (Código: ${response.code()}). Intentando fallback...")
+                    val listResponse = apiService.getEstadisticas()
+                    if (listResponse.isSuccessful && listResponse.body() != null) {
+                        stats = listResponse.body()!!.data.find { it.perfil_id == perfilId }
+                        if (stats != null) Log.d("FutMatch", "ProfileController - Estadísticas encontradas en lista global")
+                    }
+                }
+
+                if (stats != null) {
+                    withContext(Dispatchers.Main) {
+                        vista.actualizarEstadisticas(stats)
+                    }
+                } else {
+                    Log.e("FutMatch", "ProfileController - No se encontraron estadísticas para el perfil $perfilId")
+                }
+            } catch (e: Exception) {
+                Log.e("FutMatch", "ProfileController - Error cargando estadísticas", e)
+            }
+        }
+    }
+
     fun actualizarTodo(dbId: Int, perfil: Perfil, usuarioId: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             try {

@@ -43,6 +43,7 @@ class RegisterDataFragment : Fragment(R.layout.fragment_register_data) {
     private lateinit var galleryContainer: LinearLayout
     private lateinit var imgAvatar: ImageView
     private lateinit var imgBanner: ImageView
+    private lateinit var loadingOverlay: View
 
     // Colores tácticos
     private val colorPortero = Color.parseColor("#9E9E9E") // Gris
@@ -101,6 +102,7 @@ class RegisterDataFragment : Fragment(R.layout.fragment_register_data) {
         galleryContainer = view.findViewById(R.id.galleryContainer)
         imgAvatar = view.findViewById(R.id.imgAvatar)
         imgBanner = view.findViewById(R.id.imgBanner)
+        loadingOverlay = view.findViewById(R.id.loadingOverlay)
     }
 
     private fun configurarSliders() {
@@ -260,6 +262,7 @@ class RegisterDataFragment : Fragment(R.layout.fragment_register_data) {
         }
 
         controlador.guardarDatosCompletos(
+            context = requireContext(),
             username = username,
             nombre = nombre,
             apellido = apellido,
@@ -269,9 +272,14 @@ class RegisterDataFragment : Fragment(R.layout.fragment_register_data) {
             edadMax = sliderEdad.values[1].toInt(),
             posicion = posicionSeleccionada,
             tipoJuego = tipoJuegoSeleccionado,
-            avatarUrl = avatarUri?.toString() ?: "",
-            bannerUrl = bannerUri?.toString() ?: ""
+            avatarUri = avatarUri,
+            bannerUri = bannerUri,
+            galleryUris = galleryUris
         )
+    }
+
+    fun mostrarCargando(visible: Boolean) {
+        loadingOverlay.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     fun mostrarError(mensaje: String) { Toast.makeText(context, mensaje, Toast.LENGTH_LONG).show() }
