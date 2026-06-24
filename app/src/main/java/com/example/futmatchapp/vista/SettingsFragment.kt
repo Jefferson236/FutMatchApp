@@ -7,9 +7,8 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.example.futmatchapp.R
-import com.example.futmatchapp.MainActivity
+import com.example.futmatchapp.MainActivity // Importación desde la raíz
 import com.example.futmatchapp.controlador.SettingsController
 
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
@@ -27,7 +26,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Volver a mostrar el menú al entrar a la sección principal
-        (activity as? MainActivity)?.mostrarBottomNavigation()
+        (activity as? MainActivity)?.mostrarNavegacionSoporte()
 
         controlador = SettingsController(this)
         usuarioId = arguments?.getInt("USUARIO_ID") ?: 1
@@ -67,6 +66,8 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     }
 
     fun redirigirAlLogin() {
-        findNavController().navigate(R.id.loginFragment)
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.nav_host_fragment, LoginFragment())
+            .commit()
     }
 }

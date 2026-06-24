@@ -44,6 +44,7 @@ dependencies {
     implementation(libs.retrofit.gson)
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation(libs.picasso)
+    implementation(libs.lottie)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)

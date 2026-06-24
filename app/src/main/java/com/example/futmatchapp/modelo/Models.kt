@@ -112,6 +112,18 @@ data class BurbujaSolicitud(
     @SerializedName("updated_at") val updated_at: String? = null
 )
 
+data class BurbujaEnriquecida(
+    val id: Int,
+    val creadorId: Int,
+    val nombreCreador: String,
+    val avatarUrl: String?,
+    val tipoJuego: String?,
+    val mensaje: String?,
+    val ubicacion: String?,
+    val posicion: String?,
+    val fechaHora: String?
+)
+
 // --- SWIPE ---
 data class Swipe(
     val id: Int? = null,

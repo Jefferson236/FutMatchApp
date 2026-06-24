@@ -6,8 +6,6 @@
     <string name="btn_registrate">¿No tienes cuenta? Regístrate aquí</string>
     <string name="desc_logo">Logo de la aplicación</string>
     <string name="hint_username_nuevo">Nuevo Username</string>
-    <string name="error_username_formato">El username debe tener entre 1 y 8 letras minúsculas.</string>
-    <string name="error_datos_incompletos">Por favor, completa todos los campos obligatorios.</string>
-    <string name="error_posicion_vacia">Debes seleccionar una posición en el campo.</string>
-    <string name="btn_saltar_registro">SALTAR POR AHORA</string>
+    <string name="btn_saltar_registro">Saltar registro por ahora</string>
+    <string name="error_posicion_vacia">¡Toca la cancha para elegir tu posición!</string>
 </resources>

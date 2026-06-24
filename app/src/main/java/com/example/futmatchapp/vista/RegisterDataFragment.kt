@@ -1,5 +1,6 @@
 package com.example.futmatchapp.vista
 
+import android.app.Activity
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -42,6 +43,8 @@ class RegisterDataFragment : Fragment(R.layout.fragment_register_data) {
     private lateinit var galleryContainer: LinearLayout
     private lateinit var imgAvatar: ImageView
     private lateinit var imgBanner: ImageView
+    private lateinit var tvBannerHint: TextView
+    private lateinit var loadingOverlay: View
 
     // Colores tácticos
     private val colorPortero = Color.parseColor("#9E9E9E") // Gris
@@ -61,6 +64,7 @@ class RegisterDataFragment : Fragment(R.layout.fragment_register_data) {
         uri?.let {
             bannerUri = it
             imgBanner.setImageURI(it)
+            tvBannerHint.visibility = View.GONE
         }
     }
 
@@ -100,9 +104,12 @@ class RegisterDataFragment : Fragment(R.layout.fragment_register_data) {
         galleryContainer = view.findViewById(R.id.galleryContainer)
         imgAvatar = view.findViewById(R.id.imgAvatar)
         imgBanner = view.findViewById(R.id.imgBanner)
+        tvBannerHint = view.findViewById(R.id.tvBannerHint)
+        loadingOverlay = view.findViewById(R.id.loadingOverlay)
     }
 
     private fun configurarSliders() {
+        sliderEdad.values = listOf(18f, 35f)
         sliderAltura.addOnChangeListener { _, value, _ ->
             tvAlturaLabel.text = "Altura: ${value.toInt()} cm"
         }
@@ -207,14 +214,14 @@ class RegisterDataFragment : Fragment(R.layout.fragment_register_data) {
             }
             
             setOnClickListener {
-                seleccionarPosicion(this, nombrePos)
+                seleccionarPosicion(this, nombrePos, colorBase)
             }
             tag = colorBase
         }
         canchaContainer.addView(btn)
     }
 
-    private fun seleccionarPosicion(view: TextView, nombrePos: String) {
+    private fun seleccionarPosicion(view: TextView, nombrePos: String, colorBase: Int) {
         for (i in 0 until canchaContainer.childCount) {
             val child = canchaContainer.getChildAt(i) as TextView
             child.isSelected = false
@@ -253,11 +260,12 @@ class RegisterDataFragment : Fragment(R.layout.fragment_register_data) {
         val apellido = view.findViewById<EditText>(R.id.edtApellido).text.toString().trim()
 
         if (posicionSeleccionada.isEmpty()) {
-            mostrarError(getString(R.string.error_posicion_vacia))
+            mostrarError("¡Toca la cancha para elegir tu posición!")
             return
         }
 
         controlador.guardarDatosCompletos(
+            context = requireContext(),
             username = username,
             nombre = nombre,
             apellido = apellido,
@@ -267,15 +275,33 @@ class RegisterDataFragment : Fragment(R.layout.fragment_register_data) {
             edadMax = sliderEdad.values[1].toInt(),
             posicion = posicionSeleccionada,
             tipoJuego = tipoJuegoSeleccionado,
-            avatarUrl = avatarUri?.toString() ?: "",
-            bannerUrl = bannerUri?.toString() ?: ""
+            avatarUri = avatarUri,
+            bannerUri = bannerUri,
+            galleryUris = galleryUris
         )
+    }
+
+    fun mostrarCargando(visible: Boolean) {
+        loadingOverlay.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     fun mostrarError(mensaje: String) { Toast.makeText(context, mensaje, Toast.LENGTH_LONG).show() }
     fun mostrarError(resId: Int) { Toast.makeText(context, getString(resId), Toast.LENGTH_LONG).show() }
+
     fun irAlExploradorTinder() {
         (activity as? MainActivity)?.mostrarBottomNavigation()
         findNavController().navigate(R.id.action_register_to_swipeBubbles)
+    }
+
+    fun irAInicio(userId: Int) {
+        val sessionManager = com.example.futmatchapp.SessionManager(requireContext())
+        sessionManager.saveUserId(userId)
+
+        val bundle = Bundle().apply { 
+            putInt("USUARIO_ID", userId)
+            putInt("PERFIL_ID", userId)
+        }
+        (activity as? MainActivity)?.mostrarBottomNavigation()
+        findNavController().navigate(R.id.action_register_to_swipeBubbles, bundle)
     }
 }

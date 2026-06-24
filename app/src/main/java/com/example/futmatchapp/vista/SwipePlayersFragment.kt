@@ -8,8 +8,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.futmatchapp.R
 import com.example.futmatchapp.controlador.ExploreController
-import com.example.futmatchapp.modelo.BurbujaData
+import com.example.futmatchapp.modelo.BurbujaEnriquecida
 import com.example.futmatchapp.modelo.MatchResponse
+import com.example.futmatchapp.modelo.PerfilEntidad
 
 class SwipePlayersFragment : Fragment(), ExploreController.ExploreCallbackInterface {
 
@@ -38,7 +39,10 @@ class SwipePlayersFragment : Fragment(), ExploreController.ExploreCallbackInterf
         // Navegar a la sala de chat...
     }
 
-    override fun onBurbujasCargadas(burbujas: List<BurbujaData>) {} // No se usa en esta vista
+    override fun onBurbujasCargadas(burbujas: List<BurbujaEnriquecida>) {} // No se usa en esta vista
+    override fun onPerfilesCargados(perfiles: List<PerfilEntidad>) {} // Implementar feed de jugadores
+    override fun onBurbujaCreada() {} // No se usa aquí
+
     override fun onErrorExploracion(mensaje: String) {
         Toast.makeText(context, mensaje, Toast.LENGTH_SHORT).show()
     }
