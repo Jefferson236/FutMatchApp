@@ -21,6 +21,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private lateinit var edtEdadMax: EditText
     private lateinit var btnGuardarFiltros: Button
     private lateinit var btnLogOut: Button
+    private lateinit var btnDeleteAccount: Button
     private lateinit var progressSettings: ProgressBar
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,6 +36,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         edtEdadMax = view.findViewById(R.id.edtEdadMax)
         btnGuardarFiltros = view.findViewById(R.id.btnGuardarFiltros)
         btnLogOut = view.findViewById(R.id.btnLogOut)
+        btnDeleteAccount = view.findViewById(R.id.btnDeleteAccount)
         progressSettings = view.findViewById(R.id.progressSettings)
 
         btnGuardarFiltros.setOnClickListener {
@@ -45,6 +47,10 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         btnLogOut.setOnClickListener {
             controlador.cerrarSesion()
+        }
+
+        btnDeleteAccount.setOnClickListener {
+            controlador.eliminarCuenta(usuarioId)
         }
     }
 

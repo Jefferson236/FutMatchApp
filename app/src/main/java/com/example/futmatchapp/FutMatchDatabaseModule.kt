@@ -6,13 +6,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object FutMatchDatabaseModule {
-    private const val BASE_URL = "https://api.futmatchapp.com/v1/" // Cambiar por tu URL de desarrollo o producción
+    private const val BASE_URL = "http://10.0.2.2/lask2/public/" // Cambiar por tu URL de desarrollo o producción
 
     private val okHttpClient: OkHttpClient by lazy {
         OkHttpClient.Builder()
-            .connectTimeout(15, TimeUnit.SECONDS)
-            .readTimeout(15, TimeUnit.SECONDS)
-            .writeTimeout(15, TimeUnit.SECONDS)
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
             .build()
     }
 
