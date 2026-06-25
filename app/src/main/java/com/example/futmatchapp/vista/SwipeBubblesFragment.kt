@@ -16,6 +16,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import android.graphics.Canvas
+import kotlin.math.abs
+import com.example.futmatchapp.SessionManager
 import com.example.futmatchapp.R
 import com.example.futmatchapp.controlador.ExploreController
 import com.example.futmatchapp.modelo.BurbujaData
@@ -35,11 +38,19 @@ class SwipeBubblesFragment : Fragment(), ExploreController.ExploreCallbackInterf
     
     private lateinit var adapter: ExploreAdapter
     private var displayList = mutableListOf<Any>()
-    private var miId: Int = 1 // En una app real, esto vendría de la sesión (ej. SharedPreferences)
+    private var miPerfilId: Int = -1
     private var isPlayerMode = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_swipe_bubbles, container, false)
+        
+        val sessionManager = SessionManager(requireContext())
+        miPerfilId = sessionManager.getPerfilId()
+        
+        // Fallback para pruebas si no hay sesión
+        if (miPerfilId == -1) {
+            miPerfilId = 1
+        }
         
         progressBar = view.findViewById(R.id.progressExplore)
         rvCards = view.findViewById(R.id.rvCards)
@@ -99,6 +110,56 @@ class SwipeBubblesFragment : Fragment(), ExploreController.ExploreCallbackInterf
         val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean = false
 
+            override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+
+                val ivLike: View? = when (viewHolder) {
+                    is ExploreAdapter.PlayerViewHolder -> viewHolder.ivLike
+                    is ExploreAdapter.BubbleViewHolder -> viewHolder.ivLike
+                    else -> null
+                }
+                val ivDislike: View? = when (viewHolder) {
+                    is ExploreAdapter.PlayerViewHolder -> viewHolder.ivDislike
+                    is ExploreAdapter.BubbleViewHolder -> viewHolder.ivDislike
+                    else -> null
+                }
+
+                val alpha = (abs(dX) / (recyclerView.width / 2)).coerceIn(0f, 1f)
+
+                if (dX > 0) {
+                    ivLike?.visibility = View.VISIBLE
+                    ivLike?.alpha = alpha
+                    ivDislike?.visibility = View.GONE
+                } else if (dX < 0) {
+                    ivDislike?.visibility = View.VISIBLE
+                    ivDislike?.alpha = alpha
+                    ivLike?.visibility = View.GONE
+                } else {
+                    ivLike?.visibility = View.GONE
+                    ivDislike?.visibility = View.GONE
+                }
+
+                // Efecto de rotación cool
+                val rotation = dX / 20
+                viewHolder.itemView.rotation = rotation
+            }
+
+            override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+                super.clearView(recyclerView, viewHolder)
+                viewHolder.itemView.rotation = 0f
+                
+                when (viewHolder) {
+                    is ExploreAdapter.PlayerViewHolder -> {
+                        viewHolder.ivLike?.visibility = View.GONE
+                        viewHolder.ivDislike?.visibility = View.GONE
+                    }
+                    is ExploreAdapter.BubbleViewHolder -> {
+                        viewHolder.ivLike?.visibility = View.GONE
+                        viewHolder.ivDislike?.visibility = View.GONE
+                    }
+                }
+            }
+
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.bindingAdapterPosition
                 if (position == RecyclerView.NO_POSITION || position >= displayList.size) return
@@ -106,8 +167,18 @@ class SwipeBubblesFragment : Fragment(), ExploreController.ExploreCallbackInterf
                 val item = displayList[position]
                 
                 if (direction == ItemTouchHelper.RIGHT) {
-                    val targetId = if (item is PerfilEntidad) item.id else (item as BurbujaEnriquecida).id
-                    controller.procesarDeslizamiento(miId, targetId, true, isPlayerMode)
+                    val receptorPerfilId = when (item) {
+                        is PerfilEntidad -> item.id
+                        is BurbujaEnriquecida -> item.creadorId
+                        else -> -1
+                    }
+                    
+                    if (receptorPerfilId != -1) {
+                        android.util.Log.d("FutMatch", "Enviando Like Real: Emisor(Perfil)=$miPerfilId -> Receptor(Perfil)=$receptorPerfilId")
+                        controller.procesarDeslizamiento(miPerfilId, receptorPerfilId, true, isPlayerMode)
+                    } else {
+                        android.util.Log.e("FutMatch", "Error: ReceptorPerfilId es nulo o inválido")
+                    }
                 }
                 
                 displayList.removeAt(position)
@@ -159,7 +230,7 @@ class SwipeBubblesFragment : Fragment(), ExploreController.ExploreCallbackInterf
             .setPositiveButton("Publicar") { _, _ ->
                 val fechaFinal = if (selectedDate.isEmpty()) "Hoy" else "$selectedDate $selectedTime"
                 val nuevoPost = BurbujaData(
-                    creadorId = miId,
+                    creadorId = miPerfilId,
                     tipoJuego = "Fútbol",
                     mensajePersonalizado = etComentario.text.toString(),
                     ubicacionLugar = etUbicacion.text.toString(),

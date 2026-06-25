@@ -39,18 +39,24 @@ class ExploreController(private val view: ExploreCallbackInterface) {
                             val usuarios = usuariosRes.body()?.data ?: emptyList()
 
                             val enriquecidas = burbujasRaw.map { b ->
-                                val perfil = perfiles.find { it.usuario_id == b.creadorId }
-                                val usuario = usuarios.find { it.id == b.creadorId }
+                                // b.creadorId en burbujas_solicitud es una FK a perfiles.id
+                                val perfil = perfiles.find { it.id == b.creadorId }
+                                val usuarioIdFromPerfil = perfil?.usuario_id
+                                val usuario = if (usuarioIdFromPerfil != null) {
+                                    usuarios.find { it.id == usuarioIdFromPerfil }
+                                } else {
+                                    null
+                                }
                                 
                                 val nombre = when {
                                     !perfil?.nombre.isNullOrBlank() -> "${perfil?.nombre} ${perfil?.apellido ?: ""}"
                                     usuario != null -> usuario.email
-                                    else -> "Usuario #${b.creadorId}"
+                                    else -> "Capitán #${b.creadorId}"
                                 }
 
                                 BurbujaEnriquecida(
                                     id = b.id,
-                                    creadorId = b.creadorId,
+                                    creadorId = b.creadorId, // Perfil ID
                                     nombreCreador = nombre,
                                     avatarUrl = perfil?.avatar_url,
                                     tipoJuego = b.tipoJuego,
@@ -85,7 +91,9 @@ class ExploreController(private val view: ExploreCallbackInterface) {
         profileModel.descargarPerfiles(object : Callback<List<PerfilEntidad>> {
             override fun onResponse(call: Call<List<PerfilEntidad>>, response: Response<List<PerfilEntidad>>) {
                 if (response.isSuccessful && response.body() != null) {
-                    view.onPerfilesCargados(response.body()!!)
+                    val perfiles = response.body()!!
+                    android.util.Log.d("ExploreController", "Perfiles descargados (Direct): ${perfiles.size}")
+                    view.onPerfilesCargados(perfiles)
                 } else {
                     CoroutineScope(Dispatchers.IO).launch {
                         try {
@@ -116,6 +124,7 @@ class ExploreController(private val view: ExploreCallbackInterface) {
                                     )
                                 }
                                 withContext(Dispatchers.Main) {
+                                    android.util.Log.d("ExploreController", "Perfiles descargados (Fallback): ${perfilesEntidad.size}")
                                     view.onPerfilesCargados(perfilesEntidad)
                                 }
                             } else {
@@ -160,20 +169,29 @@ class ExploreController(private val view: ExploreCallbackInterface) {
     fun procesarDeslizamiento(emisorId: Int, receptorId: Int, esLike: Boolean, esHaciaJugador: Boolean) {
         if (!esLike) return 
 
-        val swipe = SwipeData(emisorId = emisorId, receptorId = receptorId, esMatch = 0)
+        val swipe = SwipeData(
+            emisor_id = emisorId, 
+            receptor_id = receptorId, 
+            es_match = 0
+        )
+
+        android.util.Log.d("ExploreController", "ENVIANDO A LARAVEL -> emisor_id: $emisorId, receptor_id: $receptorId")
 
         val callback = object : Callback<MatchResponse> {
             override fun onResponse(call: Call<MatchResponse>, response: Response<MatchResponse>) {
-                if (response.isSuccessful && response.body()?.esMatchMutuo == true) {
-                    view.onMatchGenerado(response.body()!!) 
+                if (response.isSuccessful) {
+                    android.util.Log.d("ExploreController", "Like registrado con éxito en la BD")
+                } else {
+                    val errorMsg = response.errorBody()?.string() ?: "Error desconocido"
+                    android.util.Log.e("ExploreController", "Error al registrar Like: ${response.code()} - $errorMsg")
                 }
             }
             override fun onFailure(call: Call<MatchResponse>, t: Throwable) {
+                android.util.Log.e("ExploreController", "Fallo de red al registrar Like", t)
                 view.onErrorExploracion("Error al registrar el Swipe.")
             }
         }
 
-        if (esHaciaJugador) swipeModel.registrarSwipeAJugador(swipe, callback)
-        else swipeModel.registrarSwipeABurbuja(swipe, callback)
+        swipeModel.enviarSwipe(swipe, callback)
     }
 }

@@ -293,13 +293,14 @@ class RegisterDataFragment : Fragment(R.layout.fragment_register_data) {
         findNavController().navigate(R.id.action_register_to_swipeBubbles)
     }
 
-    fun irAInicio(userId: Int) {
+    fun irAInicio(userId: Int, perfilId: Int) {
         val sessionManager = com.example.futmatchapp.SessionManager(requireContext())
         sessionManager.saveUserId(userId)
+        sessionManager.savePerfilId(perfilId)
 
         val bundle = Bundle().apply { 
             putInt("USUARIO_ID", userId)
-            putInt("PERFIL_ID", userId)
+            putInt("PERFIL_ID", perfilId)
         }
         (activity as? MainActivity)?.mostrarBottomNavigation()
         findNavController().navigate(R.id.action_register_to_swipeBubbles, bundle)

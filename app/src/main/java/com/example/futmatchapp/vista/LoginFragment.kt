@@ -52,13 +52,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         Toast.makeText(context, error, Toast.LENGTH_LONG).show()
     }
 
-    fun irAInicio(usuarioId: Int) {
+    fun irAInicio(usuarioId: Int, perfilId: Int) {
         val sessionManager = com.example.futmatchapp.SessionManager(requireContext())
         sessionManager.saveUserId(usuarioId)
+        sessionManager.savePerfilId(perfilId)
         
         val bundle = Bundle().apply { 
             putInt("USUARIO_ID", usuarioId) 
-            putInt("PERFIL_ID", usuarioId)
+            putInt("PERFIL_ID", perfilId)
         }
         (activity as? MainActivity)?.mostrarBottomNavigation()
         findNavController().navigate(R.id.swipeBubblesFragment, bundle)

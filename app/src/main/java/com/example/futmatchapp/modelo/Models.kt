@@ -113,15 +113,15 @@ data class BurbujaSolicitud(
 )
 
 data class BurbujaEnriquecida(
-    val id: Int,
-    val creadorId: Int,
-    val nombreCreador: String,
-    val avatarUrl: String?,
-    val tipoJuego: String?,
-    val mensaje: String?,
-    val ubicacion: String?,
-    val posicion: String?,
-    val fechaHora: String?
+    @SerializedName("id") val id: Int,
+    @SerializedName("creador_id") val creadorId: Int,
+    @SerializedName("nombre_creador") val nombreCreador: String,
+    @SerializedName("avatar_url") val avatarUrl: String?,
+    @SerializedName("tipo_juego") val tipoJuego: String?,
+    @SerializedName("mensaje") val mensaje: String?,
+    @SerializedName("ubicacion") val ubicacion: String?,
+    @SerializedName("posicion") val posicion: String?,
+    @SerializedName("fecha_hora") val fechaHora: String?
 )
 
 // --- SWIPE ---
@@ -129,6 +129,7 @@ data class Swipe(
     val id: Int? = null,
     @SerializedName("emisor_id") val emisor_id: Int,
     @SerializedName("receptor_id") val receptor_id: Int? = null,
+    @SerializedName("burbuja_id") val burbuja_id: Int? = null,
     @SerializedName("es_match") val es_match: Int = 0,
     @SerializedName("created_at") val created_at: String? = null,
     @SerializedName("updated_at") val updated_at: String? = null
@@ -172,4 +173,14 @@ data class ComentarioPerfil(
     val comentario: String,
     @SerializedName("created_at") val created_at: String? = null,
     @SerializedName("updated_at") val updated_at: String? = null
+)
+
+// --- CHAT MESSAGES (LOCAL & REMOTE) ---
+data class ChatMessage(
+    @SerializedName("id") val id: Int? = null,
+    @SerializedName("match_id") val matchId: Int,
+    @SerializedName("emisor_id") val emisorId: Int,
+    @SerializedName("mensaje") val text: String,
+    @SerializedName("created_at") val createdAt: String? = null,
+    val isSentByMe: Boolean = false // Se calcula dinámicamente
 )

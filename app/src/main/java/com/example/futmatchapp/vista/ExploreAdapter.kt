@@ -36,8 +36,9 @@ class ExploreAdapter(private var items: List<Any>) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is PlayerViewHolder) {
             val player = items[position] as PerfilEntidad
-            holder.tvName.text = "${player.nombre} ${player.apellido}"
-            holder.tvInfo.text = "${player.altura}m | ${player.peso}kg | ${player.posicion_juego} | ${player.pie_dominante}"
+            holder.tvName.text = "${player.nombre ?: "N/A"} ${player.apellido ?: ""}"
+            holder.tvProfileId.text = "ID Perfil: ${player.id}"
+            holder.tvInfo.text = "${player.altura ?: 0}m | ${player.peso ?: 0}kg | ${player.posicion_juego ?: "N/A"} | ${player.pie_dominante ?: "N/A"}"
             holder.tvStats.text = "OVR: ${player.ovr} | PAC: ${player.pac} | SHO: ${player.sho}"
             
             val photoUrl = if (!player.banner_url.isNullOrEmpty()) player.banner_url else player.avatar_url
@@ -53,6 +54,7 @@ class ExploreAdapter(private var items: List<Any>) :
             val bubble = items[position] as BurbujaEnriquecida
             
             holder.tvSeekerName.text = bubble.nombreCreador
+            holder.tvProfileId.text = "ID Perfil Creador: ${bubble.creadorId}"
             holder.tvRequirements.text = "Busca: ${bubble.posicion ?: "Cualquiera"}"
             holder.tvComment.text = bubble.mensaje ?: "Sin mensaje"
             holder.tvDetails.text = "${bubble.fechaHora} - ${bubble.ubicacion}"
@@ -78,15 +80,21 @@ class ExploreAdapter(private var items: List<Any>) :
     class PlayerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val ivPhoto: ImageView = view.findViewById(R.id.ivPlayerPhoto)
         val tvName: TextView = view.findViewById(R.id.tvPlayerName)
+        val tvProfileId: TextView = view.findViewById(R.id.tvProfileId)
         val tvStats: TextView = view.findViewById(R.id.tvPlayerStats)
         val tvInfo: TextView = view.findViewById(R.id.tvPlayerInfo)
+        val ivLike: ImageView? = view.findViewById(R.id.ivOverlayLike)
+        val ivDislike: ImageView? = view.findViewById(R.id.ivOverlayDislike)
     }
 
     class BubbleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val ivPhoto: ImageView = view.findViewById(R.id.ivSeekerPhoto)
         val tvSeekerName: TextView = view.findViewById(R.id.tvSeekerName)
+        val tvProfileId: TextView = view.findViewById(R.id.tvProfileId)
         val tvRequirements: TextView = view.findViewById(R.id.tvRequirements)
         val tvComment: TextView = view.findViewById(R.id.tvBubbleComment)
         val tvDetails: TextView = view.findViewById(R.id.tvBubbleDetails)
+        val ivLike: ImageView? = view.findViewById(R.id.ivOverlayLike)
+        val ivDislike: ImageView? = view.findViewById(R.id.ivOverlayDislike)
     }
 }

@@ -39,6 +39,39 @@ interface ApiService {
     @DELETE("api/perfiles/{id}")
     suspend fun eliminarPerfil(@Path("id") id: Int): Response<Unit>
 
+    // --- SWIPES ---
+    @GET("api/swipes")
+    suspend fun getSwipes(): Response<PaginatedResponse<Swipe>>
+
+    @POST("api/swipes")
+    suspend fun registrarSwipe(@Body swipe: Swipe): Response<ApiResponse<Swipe>>
+
+    @PUT("api/swipes/{id}")
+    suspend fun actualizarSwipe(@Path("id") id: Int, @Body swipe: Swipe): Response<ApiResponse<Swipe>>
+
+    @DELETE("api/swipes/{id}")
+    suspend fun eliminarSwipe(@Path("id") id: Int): Response<Unit>
+
+    // --- MATCHES ---
+    @GET("api/matches")
+    suspend fun getMatches(): Response<PaginatedResponse<Match>>
+
+    @GET("api/matches/chats/{usuario_id}")
+    suspend fun getChatsActivos(@Path("usuario_id") usuarioId: Int): Response<ApiResponse<List<ChatItem>>>
+
+    @POST("api/matches")
+    suspend fun registrarMatch(@Body match: Match): Response<ApiResponse<Match>>
+
+    // --- CHATS (MENSAJES) ---
+    @GET("api/chats")
+    suspend fun getChats(): Response<PaginatedResponse<ChatMessage>>
+
+    @POST("api/chats")
+    suspend fun enviarMensaje(@Body mensaje: ChatMessage): Response<ApiResponse<ChatMessage>>
+
+    @DELETE("api/chats/{id}")
+    suspend fun eliminarMensaje(@Path("id") id: Int): Response<Unit>
+
     // --- GALERIA ---
     @GET("api/galeria")
     suspend fun getGaleria(): Response<PaginatedResponse<Galeria>>

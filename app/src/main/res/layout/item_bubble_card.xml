@@ -35,6 +35,14 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tvProfileId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ID Perfil Creador: #"
+                android:textColor="#888888"
+                android:textSize="12sp" />
+
+            <TextView
                 android:id="@+id/tvRequirements"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -80,5 +88,23 @@
             app:strokeWidth="2dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/ivOverlayLike"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:src="@android:drawable/checkbox_on_background"
+        android:visibility="gone"
+        app:tint="#00E676" />
+
+    <ImageView
+        android:id="@+id/ivOverlayDislike"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:src="@android:drawable/ic_delete"
+        android:visibility="gone"
+        app:tint="#FF5252" />
 
 </FrameLayout>

@@ -126,7 +126,7 @@ class OnboardingController(private val vista: RegisterDataFragment) {
 
                     withContext(Dispatchers.Main) {
                         vista.mostrarCargando(false)
-                        vista.irAInicio(userId)
+                        vista.irAInicio(userId, perfilId)
                     }
                 } else {
                     val errorBody = profileResponse.errorBody()?.string()

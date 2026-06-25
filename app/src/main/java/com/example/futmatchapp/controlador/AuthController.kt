@@ -47,12 +47,46 @@ class AuthController(private val vista: LoginFragment) {
                 }
 
                 withContext(Dispatchers.Main) {
-                    vista.mostrarCargando(false)
                     if (usuarioEncontrado != null && usuarioEncontrado!!.id != null) {
-                        Log.d("FutMatch", "Login exitoso para: $username (ID: ${usuarioEncontrado!!.id})")
-                        vista.irAInicio(usuarioEncontrado!!.id!!)
+                        val realUsuarioId = usuarioEncontrado!!.id!!
+                        Log.d("FutMatch", "Usuario encontrado en BD: ID Usuario $realUsuarioId (Email: ${usuarioEncontrado!!.email})")
+                        
+                        // Buscamos el perfil asociado para obtener el ID de la tabla perfiles
+                        CoroutineScope(Dispatchers.IO).launch {
+                            try {
+                                // Buscamos en la lista de todos los perfiles el que tenga usuario_id == realUsuarioId
+                                val responsePerfiles = apiService.getPerfiles()
+                                val perfilesList = responsePerfiles.body()?.data ?: emptyList()
+                                val perfilEncontrado = perfilesList.find { it.usuario_id == realUsuarioId }
+
+                                withContext(Dispatchers.Main) {
+                                    vista.mostrarCargando(false)
+                                    if (perfilEncontrado != null) {
+                                        val realPerfilId = perfilEncontrado.id!!
+                                        Log.d("FutMatch", "¡ID DE PERFIL ENCONTRADO! Perfil ID: $realPerfilId (Usuario ID: $realUsuarioId)")
+                                        vista.irAInicio(realUsuarioId, realPerfilId)
+                                    } else {
+                                        // Intento 2: Buscar por el endpoint específico si falló el find
+                                        val responseEspecífico = apiService.getPerfilPorUsuario(realUsuarioId)
+                                        if (responseEspecífico.isSuccessful && responseEspecífico.body()?.data != null) {
+                                            val perfilId = responseEspecífico.body()!!.data!!.id!!
+                                            vista.irAInicio(realUsuarioId, perfilId)
+                                        } else {
+                                            Log.e("FutMatch", "Error: No se encontró registro en tabla 'perfiles' para usuario_id $realUsuarioId")
+                                            vista.mostrarError("No tienes un perfil creado con este usuario. Por favor regístrate.")
+                                        }
+                                    }
+                                }
+                            } catch (e: Exception) {
+                                withContext(Dispatchers.Main) {
+                                    vista.mostrarCargando(false)
+                                    vista.mostrarError("Error de red al buscar perfil: ${e.message}")
+                                }
+                            }
+                        }
                     } else {
-                        vista.mostrarError("Usuario no encontrado. ¿Deseas registrarte?")
+                        vista.mostrarCargando(false)
+                        vista.mostrarError("Usuario no encontrado.")
                     }
                 }
             } catch (e: Exception) {

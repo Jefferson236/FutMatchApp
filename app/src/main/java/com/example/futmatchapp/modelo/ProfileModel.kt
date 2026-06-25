@@ -10,7 +10,7 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 data class PerfilEntidad(
-    val id: Int,
+    @com.google.gson.annotations.SerializedName("id") val id: Int,
     @com.google.gson.annotations.SerializedName("usuario_id") val usuarioId: Int?,
     val nombre: String?,
     val apellido: String?,
